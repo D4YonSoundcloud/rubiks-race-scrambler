@@ -1,10 +1,13 @@
 <template>
   <div id="app">
-    <p>Rubiks scrambler</p>
-    <div class="container">
-            <ul v-if="loading">
-                <li v-for="(color, index) in scrambledColors" :key=index>
-                    <div class="square">{{color}}</div>
+    <div class="button-container">
+    <p>Rubiks Race Scrambler</p>
+    <button @click='generateColors'>Scramble!</button>
+    </div>
+    <div v-if="loading" class="container">
+            <ul>
+                <li  v-for="(color, index) in scrambledColors" :key=index>
+                    <div v-bind:style="{backgroundColor: color}" class="square"><p v-bind:style="{color: color}" class="color">{{color}}</p></div>
                 </li>    
             </ul>  
         </div>  
@@ -12,11 +15,6 @@
 </template>
 
 <script>
-
-
-import Scrambler from './components/Scrambler.vue'
-
-
 
 export default {
   name: 'app',
@@ -35,13 +33,21 @@ export default {
         }
     },
     methods: {
-        generateColors(arr) {
-            for(let i = 0; i < 9; i++){
-                this.checkScrambledColors(arr);
-                arr.push(this.randomProperty(this.colorOptions));
-                console.log(arr)
-            }
-
+        generateColors() {
+          if(this.loading) this.loading = false;
+          console.log(this.loading);
+          if(this.scrambledColors.length === 9){
+            this.scrambledColors = []
+          }
+          console.log(this.scrambledColors);
+          for(let i = 0; i < 9; i++){
+                this.checkScrambledColors(this.scrambledColors);
+                this.scrambledColors.push(this.randomProperty(this.colorOptions));
+                console.log(this.scrambledColors)
+          }
+          
+          console.log(this.loading);
+          this.loading = true;
         },
         randomProperty (obj) {
             let keys = Object.keys(obj);
@@ -57,7 +63,7 @@ export default {
                 for (let i = 0; i < sortedArr.length - 1; i++) {
                     if (sortedArr[i + 1] == sortedArr[i]) {
                         counter++;
-                        if(counter === 5) {
+                        if(counter === 4) {
                            continue; 
                         }
                         results.push(sortedArr[i]);
@@ -68,18 +74,23 @@ export default {
     },
     created(){
         this.generateColors(this.scrambledColors);
-        this.loading = true;
     }    
 }
 </script>
 
 <style>
+    * {
+        margin: 0;
+    }
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #333333;
+  background-color: rgb(240, 240, 240);
+  height: 100vh
 }
 
 h1, h2 {
@@ -93,28 +104,87 @@ ul {
 
 li {
   display: inline-block;
-  margin: 0 10px;
+  margin: 0;
 }
 
 a {
   color: #42b983;
 }
 
-p{
-  transform: translateY(5vh);
-}
+
 
 div.square{
-  height: 250px;
-  width: 250px;
+  height: 180px;
+  width: 180px;
+  border-radius: 8px;
+  margin-left: 10px;
+  transition: .4s ease;
+  margin-top: 10px;
+  transform: translateY(10px) translateX(-5px);
+  display: flex;
+  align-items: center;
+}
+
+p.color {
+  transform: translateX(60px);
+  font-size: 1.5rem;
+  transition: .2s ease;
+  text-shadow: 1px 1px 3px black;
+  cursor: default;
+
+}
+
+div.square:hover{
+  transform: scale(1.05) translateY(10px) translateX(-5px);
 }
 
 div.container {
-  height: 900px;
-  width: 900px;
+  height: 600px;
+  width: 600px;
   margin:0 auto;
-  transform: translateY(15vh);
+  transform: translateX(15vw) translateY(10vh);
   display: flex;
-  flex-flow: row wrap
+  justify-content: center;
+  flex-flow: row wrap;
+  background-color: rgb(22, 22, 22);
+  border-radius: 25px;
+  transition: .6s ease;
+  box-shadow: 0px 0px 5px 5px rgb(202, 202, 202);
+}
+
+div.container:hover{
+  border-radius: 35px;
+  background-color: black;
+  box-shadow: 0px 0px 10px 10px rgb(104, 104, 104);
+}
+
+div.button-container {
+  position: absolute;
+  top: 30vh;
+  left: 45vh;
+  background-color: white;
+  width: 300px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column wrap;
+  border-radius: 10px;
+  transition: .6s ease;
+  box-shadow: 5px 5px 2px blue, -5px 5px 2px red, 5px -5px 2px green, -5px 7px 2px yellow,  -7px 5px 2px orange, -5px -5px 2px white;
+}
+
+div.button-container:hover {
+    transform: scale(1.05);
+}
+
+button {
+  margin-top: 20px;
+  transition: .6s ease;
+}
+
+button:hover{
+  transform: scale(1.1);
+  box-shadow: 1px 1px 1px blue, -1px 1px 1px red, 1px -1px 1px green, -1px 1px 1px yellow,  -1px 1px 1px orange, -1px -1px 1px white;
 }
 </style>
