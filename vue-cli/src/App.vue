@@ -70,9 +70,9 @@ export default {
                       }
                         counter++;
                         console.log(counter);
-                        console.log(results);
-                        results.push(sortedArr[i]);
                     }
+                  results.push(sortedArr[i]);
+                  console.log(results);
                 }
                 return results;
         },
@@ -185,6 +185,7 @@ div.button-container {
 
 div.button-container:hover {
     transform: scale(1.05);
+    box-shadow: 5px 5px 5px blue, -5px 5px 5px red, 5px -5px 5px green, -5px 7px 5px yellow,  -7px 5px 5px orange, -5px -5px 5px white;
 }
 
 button {
