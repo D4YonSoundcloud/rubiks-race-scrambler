@@ -3,11 +3,13 @@
     <div class="button-container">
     <p>Rubiks Race Scrambler</p>
     <button @click='generateColors'>Scramble!</button>
+    <button @click='showColorsText'>Show Colors Text</button>
+    
     </div>
     <div v-if="loading" class="container">
             <ul>
                 <li  v-for="(color, index) in scrambledColors" :key=index>
-                    <div v-bind:style="{backgroundColor: color}" class="square"><p v-bind:style="{color: color}" class="color">{{color}}</p></div>
+                    <div v-bind:style="{backgroundColor: color}" class="square"><p v-bind:style="{color: color}" v-if="showColors" class="color">{{color}}</p></div>
                 </li>    
             </ul>  
         </div>  
@@ -29,7 +31,8 @@ export default {
                     'green':'green',
                 },
             scrambledColors: [],
-            loading: false
+            loading: false,
+            showColors: false,
         }
     },
     methods: {
@@ -62,14 +65,19 @@ export default {
                 let counter = 1
                 for (let i = 0; i < sortedArr.length - 1; i++) {
                     if (sortedArr[i + 1] == sortedArr[i]) {
+                      if(counter >= 4) {
+                         continue; 
+                      }
                         counter++;
-                        if(counter === 4) {
-                           continue; 
-                        }
+                        console.log(counter);
+                        console.log(results);
                         results.push(sortedArr[i]);
                     }
                 }
                 return results;
+        },
+        showColorsText(){
+          this.showColors = !this.showColors
         }
     },
     created(){
@@ -120,7 +128,7 @@ div.square{
   margin-left: 10px;
   transition: .4s ease;
   margin-top: 10px;
-  transform: translateY(10px) translateX(-5px);
+  transform: translateY(5px) translateX(-5px);
   display: flex;
   align-items: center;
 }
@@ -135,7 +143,8 @@ p.color {
 }
 
 div.square:hover{
-  transform: scale(1.05) translateY(10px) translateX(-5px);
+  border-radius: 15px;
+  transform: scale(1.05) translateY(5px) translateX(-5px);
 }
 
 div.container {
@@ -163,8 +172,8 @@ div.button-container {
   top: 30vh;
   left: 45vh;
   background-color: white;
-  width: 300px;
-  height: 100px;
+  width: 400px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
